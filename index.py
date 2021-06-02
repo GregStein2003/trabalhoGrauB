@@ -8,25 +8,41 @@ linhas = int(input('Digite a quantidade de fileiras: '))
 colunas = int(input('Digite o número de assentos por fileira: '))
 M = []
 
-def mostrarMapa():
-    # colunaVar = input('Digite o número da coluna: ')
-    # linhaVar = input('Digite o número da linha: ')
+for i in range(linhas):
+    M.append(list('0' * colunas))
 
-    for i in range(linhas):
-        M.append(list(range((colunas * i), colunas * (i + 1))))
+def mostrarMapa():
 
     for outro in range(len(M)): # Lê a matriz || 0 - Número de linhas
-        for outroC in range(len(M[0])): # Lê cada valor da Matria || 0 - Número de colunas
-            print(".", end=' ')
         print()
-    
-    # for l in M:
-    #     print(M[0][1])
+        for outroC in range(len(M[0])): # Lê cada valor da Matria || 0 - Número de colunas
+            if M[outro][outroC] == '0':
+                print('.', end=" ")
+            else:
+                print(M[outro][outroC])
+
+    print()
+    input('Digite enter para prosseguir')
     
     # print('Posição - [{}][{}], valor: {}' .format(outro, outroC, M[outro][outroC])) 
 
 def selecionarCadeira():
-    mostrarMapa()
+    linhaDigita = int(input('Digite uma linha: '))
+    colunaDigita = int(input('Digite uma coluna: '))
+
+    for outro in range(len(M)): # Lê a matriz || 0 - Número de linhas
+        for outroC in range(len(M[0])): # Lê cada valor da Matria || 0 - Número de colunas
+            if outro == linhaDigita and outroC == colunaDigita:
+                if linhaDigita >= linhas and colunaDigita >= colunas:
+                    print('Digite uma cadeira válida!')
+                else:
+                    idade = int(input('Informe a sua idade: '))
+                    sexo = str(input('Informe o seu sexo: '))
+                    M[linhaDigita][colunaDigita] = 'x'
+                    break
+
+    input('Digite enter para prosseguir')
+
 
 # Menu
 if __name__ == '__main__':
