@@ -9,21 +9,24 @@ colunas = int(input('Digite o número de assentos por fileira: '))
 M = []
 
 def mostrarMapa():
+    # colunaVar = input('Digite o número da coluna: ')
+    # linhaVar = input('Digite o número da linha: ')
+
     for i in range(linhas):
         M.append(list(range((colunas * i), colunas * (i + 1))))
 
     for outro in range(len(M)): # Lê a matriz || 0 - Número de linhas
         for outroC in range(len(M[0])): # Lê cada valor da Matria || 0 - Número de colunas
-            print("·", end=' ')
+            print(".", end=' ')
         print()
     
+    # for l in M:
+    #     print(M[0][1])
+    
+    # print('Posição - [{}][{}], valor: {}' .format(outro, outroC, M[outro][outroC])) 
 
 def selecionarCadeira():
-    for outro in range(len(M)): # Lê a matriz || 0 - Número de linhas
-        for outroC in range(len(M[0])): # Lê cada valor da Matria || 0 - Número de colunas
-            print("·", end=' ')
-        print()
-    input('Digite enter para prosseguir')
+    mostrarMapa()
 
 # Menu
 if __name__ == '__main__':
