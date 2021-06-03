@@ -1,18 +1,40 @@
 import os
 import csv
+# import pandas as pd
 
 os.system('cls' if os.name == 'nt' else 'clear') # Limpa a tela - Win/Linux
 
 valor = float(input('Digite o valor do ingresso: '))
 linhas = int(input('Digite a quantidade de fileiras: '))
-colunas = int(input('Digite o número de assentos por fileira: '))
+colunas = str(input('Digite a letra de assentos por fileira: '))
 M = []
+colunaAscii = 0
 
 for i in range(linhas):
-    M.append(list('0' * colunas))
+    M.append(list(range(ord('A'), ord('D'))))
+
+
+def carregarDados():
+
+    print()
+
+    nomeArquivo = input('Informe o nome do arquivo: ')
+
+    f = open(f"{nomeArquivo}.csv", "w")
+    writer = csv.writer(f)
+    writer.writerows([['Assento', 'Sexo', 'Idade']])
+
+    for letra in range(ord('A'), ord(f'{colunas}') + 1):
+        for numero in range(1, linhas + 1):
+            print(chr(letra) + str(numero)) #CHR(Converte para letra)
+            writer.writerow([chr(letra) + str(numero), 'abacaxi', 12])
+            break
+        print() #Quebra de linha
+
+    f.close()
 
 def mostrarMapa():
-
+    
     for outro in range(len(M)): # Lê a matriz || 0 - Número de linhas
         print()
         for outroC in range(len(M[0])): # Lê cada valor da Matria || 0 - Número de colunas
@@ -32,14 +54,11 @@ def selecionarCadeira():
 
     for outro in range(len(M)): # Lê a matriz || 0 - Número de linhas
         for outroC in range(len(M[0])): # Lê cada valor da Matria || 0 - Número de colunas
+            if linhaDigita >= linhas and colunaDigita >= colunas:
+                print('Digite uma cadeira válida!')
             if outro == linhaDigita and outroC == colunaDigita:
-                if linhaDigita >= linhas and colunaDigita >= colunas:
-                    print('Digite uma cadeira válida!')
-                else:
-                    idade = int(input('Informe a sua idade: '))
-                    sexo = str(input('Informe o seu sexo: '))
-                    M[linhaDigita][colunaDigita] = 'x'
-                    break
+                M[linhaDigita][colunaDigita] = 'x'
+                break
 
     input('Digite enter para prosseguir')
 
@@ -61,8 +80,7 @@ if __name__ == '__main__':
         item = int(input("Digite uma opção: "))
 
         if item == 1:
-            print('1 - Carregar Dados:')
-            input('Digite enter para prosseguir')
+            carregarDados()
 
         elif item == 2:
             print('2 - Consultar Situação de um Assento:')
