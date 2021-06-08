@@ -6,12 +6,19 @@ os.system('cls' if os.name == 'nt' else 'clear') # Limpa a tela - Win/Linux
 
 valor = float(input('Digite o valor do ingresso: '))
 linhas = int(input('Digite a quantidade de fileiras: '))
-colunas = str(input('Digite a letra de assentos por fileira: '))
+colunas = int(input('Digite a letra de assentos por fileira: '))
 M = []
-colunaAscii = 0
+
+# for i in range(linhas):
+#     M.append(list(range(ord('A'), ord(colunas))))
+
 
 for i in range(linhas):
-    M.append(list(range(ord('A'), ord('D'))))
+    M.append([0] * colunas)
+ 
+for l in M:
+    print(l)
+input('Digite enter para prosseguir: ')
 
 
 def carregarDados():
@@ -20,6 +27,10 @@ def carregarDados():
 
     nomeArquivo = input('Informe o nome do arquivo: ')
 
+    # with open(f"D:\\Informações Pessoais\\Unisinos\\Análise e Desenovimento de Sistemas\\1° Semestre\\Fundamentos da Programação\\Visual\\{nomeArquivo}.csv", "r") as f:
+    #     reader = csv.reader(f)
+    #     for row in reader:
+    #         print(row)
     f = open(f"{nomeArquivo}.csv", "w")
     writer = csv.writer(f)
     writer.writerows([['Assento', 'Sexo', 'Idade']])
@@ -34,34 +45,53 @@ def carregarDados():
     f.close()
 
 def mostrarMapa():
-    
-    for outro in range(len(M)): # Lê a matriz || 0 - Número de linhas
-        print()
-        for outroC in range(len(M[0])): # Lê cada valor da Matria || 0 - Número de colunas
-            if M[outro][outroC] == '0':
-                print('.', end=" ")
-            else:
-                print(M[outro][outroC])
 
-    print()
+    print(M)
+
+    # for outro in range(len(M)): # Lê a matriz || 0 - Número de linhas
+    #     print()
+    #     for outroC in range(len(M[0])): # Lê cada valor da Matria || 0 - Número de colunas
+    #         if M[outro][outroC] == 0:
+    #             print('.', end=" ")
+    #         else:
+    #             print('x', end=" ")
+    # print()
     input('Digite enter para prosseguir')
     
     # print('Posição - [{}][{}], valor: {}' .format(outro, outroC, M[outro][outroC])) 
 
 def selecionarCadeira():
+    input('Digite enter para prosseguir: ')
+    
+def realizarReserva():
+
+    print()
+    
+    print('Lugares Vagos: ')
+    for outro in range(len(M)): # Lê a matriz || 0 - Número de linhas
+        print()
+        for outroC in range(len(M[0])): # Lê cada valor da Matria || 0 - Número de colunas
+            if M[outro][outroC] == 0:
+                print('.', end=" ")
+            else:
+                print('x', end=" ")
+    print()
+                
     linhaDigita = int(input('Digite uma linha: '))
     colunaDigita = int(input('Digite uma coluna: '))
 
     for outro in range(len(M)): # Lê a matriz || 0 - Número de linhas
         for outroC in range(len(M[0])): # Lê cada valor da Matria || 0 - Número de colunas
-            if linhaDigita >= linhas and colunaDigita >= colunas:
-                print('Digite uma cadeira válida!')
             if outro == linhaDigita and outroC == colunaDigita:
-                M[linhaDigita][colunaDigita] = 'x'
+                M[linhaDigita][colunaDigita] == 'x'
                 break
-
+                
     input('Digite enter para prosseguir')
-
+    
+def testeLerDados():
+    # for l in M:
+    #     print(l)
+    print(M)
 
 # Menu
 if __name__ == '__main__':
@@ -87,12 +117,10 @@ if __name__ == '__main__':
             input('Digite enter para prosseguir')
 
         elif item == 3:
-            print('3 - Realizar Reserva:')
-            input('Digite enter para prosseguir')
+            realizarReserva()
 
         elif item == 4:
-            print('4 - Liberar Reserva:')
-            input('Digite enter para prosseguir')
+            testeLerDados()
 
         elif item == 5:
             mostrarMapa()
