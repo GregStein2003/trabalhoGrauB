@@ -9,17 +9,12 @@ linhas = int(input('Digite a quantidade de fileiras: '))
 colunas = int(input('Digite a letra de assentos por fileira: '))
 M = []
 
-# for i in range(linhas):
-#     M.append(list(range(ord('A'), ord(colunas))))
-
-
 for i in range(linhas):
     M.append([0] * colunas)
- 
-for l in M:
-    print(l)
-input('Digite enter para prosseguir: ')
 
+f = open("grauB.csv", "w")
+writer = csv.writer(f)
+writer.writerows([['Assento', 'Sexo', 'Idade']])
 
 def carregarDados():
 
@@ -81,10 +76,19 @@ def realizarReserva():
     colunaDigita = int(input('Digite uma coluna: '))
 
     for outro in range(len(M)): # Lê a matriz || 0 - Número de linhas
-        for outroC in range(len(M[0])): # Lê cada valor da Matria || 0 - Número de colunas
-            if outro == linhaDigita and outroC == colunaDigita:
-                M[linhaDigita][colunaDigita] == 'x'
-                break
+            for outroC in range(len(M[0])): # Lê cada valor da Matria || 0 - Número de colunas
+                if linhaDigita >= linhas and colunaDigita >= colunas:
+                    print('Digite uma cadeira válida!')
+                    break
+                if outro == linhaDigita and outroC == colunaDigita:
+                    sexo = str(input("Informe o seu gênero: "))
+                    idade = int(input("Informe a sua idade: "))
+                    fA = open("grauB.csv", "a")
+                    writer = csv.writer(fA)
+                    writer.writerow([f'[{linhaDigita}][{colunaDigita}]', sexo, idade])
+                    f.close()
+                    M[linhaDigita][colunaDigita] = 'x'
+                    break
                 
     input('Digite enter para prosseguir')
     
