@@ -1,4 +1,7 @@
+import os
 import csv
+
+os.system('cls' if os.name == 'nt' else 'clear') # Limpa a tela - Win/Linux
 
 # Escreve as informações no .csv
 nomeArquivo = input('Informe o nome do arquivo: ')
@@ -15,15 +18,16 @@ for letra in range(ord('A'), ord('D') + 1):
 
 f.close()
 
-# Lê as informações 
-# with open('grauB.csv', newline='') as csvfile:
-#     spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
-#     # Número de linhas
-#     for row in spamreader:
-#         for x in row:
-#             print(', '.join(x[0]))
+print('LEITURA DE ARQUIVOS')
 
-#     # Número de colunas
-#     for column in spamreader:
-#         for y in column:
-#             print(', '.join(y[1]))
+# Lê as informações 
+f = open(f"{nomeArquivo}.csv", 'r')
+reader = csv.reader(f)
+tabela = list(reader)
+for x in tabela:
+    if x == []:
+        continue # Utilizei esse if para pular as linhas em branco da tabela
+    else:
+        print(x[0]) # Gostaria de pegar somente o elemento A(1x), pois ele está na coluna[0] e linha[0]  
+        
+f.close()

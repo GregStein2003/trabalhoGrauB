@@ -8,13 +8,15 @@ valor = float(input('Digite o valor do ingresso: '))
 linhas = int(input('Digite a quantidade de fileiras: '))
 colunas = int(input('Digite a letra de assentos por fileira: '))
 M = []
+linhaDigitaLetra = 0
 
 for i in range(linhas):
     M.append([0] * colunas)
 
-f = open("grauB.csv", "w")
+f = open("D:\\Informações Pessoais\\Unisinos\\Análise e Desenovimento de Sistemas\\1° Semestre\\Fundamentos da Programação\\Visual\\Trabalho Grau B\\grauB.csv", "w")
 writer = csv.writer(f)
 writer.writerows([['Assento', 'Sexo', 'Idade']])
+f.close()
 
 def carregarDados():
 
@@ -22,22 +24,40 @@ def carregarDados():
 
     nomeArquivo = input('Informe o nome do arquivo: ')
 
-    # with open(f"D:\\Informações Pessoais\\Unisinos\\Análise e Desenovimento de Sistemas\\1° Semestre\\Fundamentos da Programação\\Visual\\{nomeArquivo}.csv", "r") as f:
-    #     reader = csv.reader(f)
-    #     for row in reader:
-    #         print(row)
-    f = open(f"{nomeArquivo}.csv", "w")
-    writer = csv.writer(f)
-    writer.writerows([['Assento', 'Sexo', 'Idade']])
+    # Lê
+    f = open(f"D:\\Informações Pessoais\\Unisinos\\Análise e Desenovimento de Sistemas\\1° Semestre\\Fundamentos da Programação\\Visual\\Trabalho Grau B\\{nomeArquivo}.csv", 'r')
+    reader = csv.reader(f)
+    tabela = list(reader)
+    for x in tabela:
+        if x == []:
+            continue
+        else:
+            print(x)
 
-    for letra in range(ord('A'), ord(f'{colunas}') + 1):
-        for numero in range(1, linhas + 1):
-            print(chr(letra) + str(numero)) #CHR(Converte para letra)
-            writer.writerow([chr(letra) + str(numero), 'abacaxi', 12])
-            break
-        print() #Quebra de linha
+    # for row in reader:
+    #     print(row)
+
+    # for letra in range(ord('A'), ord('D') + 1):
+    #     for numero in range(1, linhas + 1):
+    #         print(chr(letra) + str(numero)) #CHR(Converte para letra)
+    #         writer.writerow([chr(letra) + str(numero), 'abacaxi', 12])
+    #     print() #Quebra de linha
 
     f.close()
+
+
+    # f = open(f"{nomeArquivo}.csv", "w")
+    # writer = csv.writer(f)
+    # writer.writerows([['Assento', 'Sexo', 'Idade']])
+
+    # for letra in range(ord('A'), ord(f'{colunas}') + 1):
+    #     for numero in range(1, linhas + 1):
+    #         print(chr(letra) + str(numero)) #CHR(Converte para letra)
+    #         writer.writerow([chr(letra) + str(numero), 'abacaxi', 12])
+    #         break
+    #     print() #Quebra de linha
+
+    # f.close()
 
 def mostrarMapa():
 
@@ -83,10 +103,10 @@ def realizarReserva():
                 if outro == linhaDigita and outroC == colunaDigita:
                     sexo = str(input("Informe o seu gênero: "))
                     idade = int(input("Informe a sua idade: "))
-                    fA = open("grauB.csv", "a")
+                    fA = open("D:\\Informações Pessoais\\Unisinos\\Análise e Desenovimento de Sistemas\\1° Semestre\\Fundamentos da Programação\\Visual\\Trabalho Grau B\\grauB.csv", "a")
                     writer = csv.writer(fA)
-                    writer.writerow([f'[{linhaDigita}][{colunaDigita}]', sexo, idade])
-                    f.close()
+                    writer.writerow([f'[{linhaDigitaLetra}' + f'{colunaDigita}]', sexo, idade])
+                    fA.close()
                     M[linhaDigita][colunaDigita] = 'x'
                     break
                 
