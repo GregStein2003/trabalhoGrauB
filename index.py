@@ -7,57 +7,30 @@ os.system('cls' if os.name == 'nt' else 'clear') # Limpa a tela - Win/Linux
 valor = float(input('Digite o valor do ingresso: '))
 linhas = int(input('Digite a quantidade de fileiras: '))
 colunas = int(input('Digite a letra de assentos por fileira: '))
-M = []
-linhaDigitaLetra = 0
+linhaDigitaLetra = ''
 
-for i in range(linhas):
-    M.append([0] * colunas)
+# def carregarNomeArquivo():
+#     nomeArquivo = input('Informe o nome do arquivo: ')
 
-f = open("D:\\Informações Pessoais\\Unisinos\\Análise e Desenovimento de Sistemas\\1° Semestre\\Fundamentos da Programação\\Visual\\Trabalho Grau B\\grauB.csv", "w")
-writer = csv.writer(f)
-writer.writerows([['Assento', 'Sexo', 'Idade']])
-f.close()
+#     return nomeArquivo
 
 def carregarDados():
 
-    print()
+    # carregarNomeArquivo() # Função para pedir o nome do arquivo
 
     nomeArquivo = input('Informe o nome do arquivo: ')
 
-    # Lê
-    f = open(f"D:\\Informações Pessoais\\Unisinos\\Análise e Desenovimento de Sistemas\\1° Semestre\\Fundamentos da Programação\\Visual\\Trabalho Grau B\\{nomeArquivo}.csv", 'r')
+    f = open(f"{nomeArquivo}.csv", 'a')
     reader = csv.reader(f)
-    tabela = list(reader)
-    for x in tabela:
-        if x == []:
-            continue
-        else:
-            print(x)
 
-    # for row in reader:
-    #     print(row)
-
-    # for letra in range(ord('A'), ord('D') + 1):
-    #     for numero in range(1, linhas + 1):
-    #         print(chr(letra) + str(numero)) #CHR(Converte para letra)
-    #         writer.writerow([chr(letra) + str(numero), 'abacaxi', 12])
-    #     print() #Quebra de linha
+    if os.stat(f"{nomeArquivo}.csv").st_size == 0:
+        M = []
+        for i in range(linhas):
+            M.append([0] * colunas)
 
     f.close()
 
-
-    # f = open(f"{nomeArquivo}.csv", "w")
-    # writer = csv.writer(f)
-    # writer.writerows([['Assento', 'Sexo', 'Idade']])
-
-    # for letra in range(ord('A'), ord(f'{colunas}') + 1):
-    #     for numero in range(1, linhas + 1):
-    #         print(chr(letra) + str(numero)) #CHR(Converte para letra)
-    #         writer.writerow([chr(letra) + str(numero), 'abacaxi', 12])
-    #         break
-    #     print() #Quebra de linha
-
-    # f.close()
+    return M
 
 def mostrarMapa():
 
@@ -78,9 +51,9 @@ def mostrarMapa():
 def selecionarCadeira():
     input('Digite enter para prosseguir: ')
     
-def realizarReserva():
+def realizarReserva(M):
 
-    print()
+    nomeArquivo = input('Informe o nome do arquivo: ')
     
     print('Lugares Vagos: ')
     for outro in range(len(M)): # Lê a matriz || 0 - Número de linhas
@@ -91,25 +64,36 @@ def realizarReserva():
             else:
                 print('x', end=" ")
     print()
+    print()
                 
-    linhaDigita = int(input('Digite uma linha: '))
-    colunaDigita = int(input('Digite uma coluna: '))
+    linhaDigita = int(input('Digite uma linha: ')) - 1
+    colunaDigita = int(input('Digite uma coluna: ')) -1 
 
     for outro in range(len(M)): # Lê a matriz || 0 - Número de linhas
-            for outroC in range(len(M[0])): # Lê cada valor da Matria || 0 - Número de colunas
-                if linhaDigita >= linhas and colunaDigita >= colunas:
-                    print('Digite uma cadeira válida!')
-                    break
-                if outro == linhaDigita and outroC == colunaDigita:
-                    sexo = str(input("Informe o seu gênero: "))
-                    idade = int(input("Informe a sua idade: "))
-                    fA = open("D:\\Informações Pessoais\\Unisinos\\Análise e Desenovimento de Sistemas\\1° Semestre\\Fundamentos da Programação\\Visual\\Trabalho Grau B\\grauB.csv", "a")
-                    writer = csv.writer(fA)
-                    writer.writerow([f'[{linhaDigitaLetra}' + f'{colunaDigita}]', sexo, idade])
-                    fA.close()
-                    M[linhaDigita][colunaDigita] = 'x'
-                    break
-                
+        for outroC in range(len(M[0])): # Lê cada valor da Matria || 0 - Número de colunas
+            if linhaDigita >= linhas and colunaDigita >= colunas:
+                print('Digite uma cadeira válida!')
+                break
+            if outro == linhaDigita and outroC == colunaDigita:
+                sexo = str(input("Informe o seu gênero: "))
+                idade = int(input("Informe a sua idade: "))
+                fA = open(f"{nomeArquivo}.csv", "a")
+                writer = csv.writer(fA)
+                if linhaDigita == 0:
+                    linhaDigitaLetra = 'A'
+                elif linhaDigita == 1:
+                    linhaDigitaLetra = 'B'
+                elif linhaDigita == 2:
+                    linhaDigitaLetra = 'C'
+                elif linhaDigita == 3:
+                    linhaDigitaLetra = 'D'
+                elif linhaDigita == 4:
+                    linhaDigitaLetra = 'E'
+                writer.writerow([f'{linhaDigitaLetra}' + f'{colunaDigita + 1}', sexo, idade])
+                fA.close()
+                M[linhaDigita][colunaDigita] = 'x'
+                break
+            
     input('Digite enter para prosseguir')
     
 def testeLerDados():
@@ -134,14 +118,14 @@ if __name__ == '__main__':
         item = int(input("Digite uma opção: "))
 
         if item == 1:
-            carregarDados()
+            M = carregarDados()
 
         elif item == 2:
             print('2 - Consultar Situação de um Assento:')
             input('Digite enter para prosseguir')
 
         elif item == 3:
-            realizarReserva()
+            realizarReserva(M)
 
         elif item == 4:
             testeLerDados()
