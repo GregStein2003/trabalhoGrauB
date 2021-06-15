@@ -27,30 +27,55 @@ def carregarDados():
         M = []
         for i in range(linhas):
             M.append([0] * colunas)
-
+    else:
+        fReader = open(f"{nomeArquivo}.csv", 'r')
+        readerExistente = csv.reader(fReader)
+        tabela = list(readerExistente)
+        countLinhas = 0
+        M = []
+        listaOcupados = []
+        for x in tabela:
+            if x == []:
+                continue  
+            else: 
+                countLinhas = countLinhas + 1
+                xzao = str(x)
+                imprimir = xzao.replace("['", "").split(",")[0]
+                imprimir = imprimir.replace(imprimir[-1], "")
+                listaOcupados.append(imprimir)     
+        input('Digite algo: ')    
+        for i in range(countLinhas):
+            M.append([0] * countLinhas)
+        for x in listaOcupados:
+            linhaFor = int(x[1]) - 1
+            if x[0] == 'A':
+                M[0][linhaFor] = 'x'
+            elif x[0] == 'B':
+                M[1][linhaFor] = 'x'
+            elif x[0] == 'C':
+                M[2][linhaFor] = 'x'
+            elif x[0] == 'D':
+                M[3][linhaFor] = 'x'
+            elif x[0] == 'D':
+                M[4][linhaFor] = 'x'
     f.close()
 
     return M
 
-def mostrarMapa():
+def consultarAssento(M):
 
     print(M)
-
-    # for outro in range(len(M)): # Lê a matriz || 0 - Número de linhas
-    #     print()
-    #     for outroC in range(len(M[0])): # Lê cada valor da Matria || 0 - Número de colunas
-    #         if M[outro][outroC] == 0:
-    #             print('.', end=" ")
-    #         else:
-    #             print('x', end=" ")
-    # print()
-    input('Digite enter para prosseguir')
     
-    # print('Posição - [{}][{}], valor: {}' .format(outro, outroC, M[outro][outroC])) 
+    linhaDigita = int(input('Digite uma linha: ')) - 1
+    colunaDigita = int(input('Digite uma coluna: ')) - 1 
 
-def selecionarCadeira():
+    if M[linhaDigita][colunaDigita] == 'x':
+        print('Assento está ocupada!')
+    else:
+        print('Assento está vaga!')
+
     input('Digite enter para prosseguir: ')
-    
+
 def realizarReserva(M):
 
     nomeArquivo = input('Informe o nome do arquivo: ')
@@ -95,11 +120,53 @@ def realizarReserva(M):
                 break
             
     input('Digite enter para prosseguir')
+
+def liberarAssento(M):
+
+    print('MAPA: ')
+    for outro in range(len(M)): # Lê a matriz || 0 - Número de linhas
+        print()
+        for outroC in range(len(M[0])): # Lê cada valor da Matria || 0 - Número de colunas
+            if M[outro][outroC] == 0:
+                print('.', end=" ")
+            else:
+                print('x', end=" ")
+    print()
+    print()
+
+    linhaDigita = int(input('Digite uma linha: ')) - 1
+    colunaDigita = int(input('Digite uma coluna: ')) - 1 
+
+    if M[linhaDigita][colunaDigita] == 0:
+        print('O Assento já estava vago, por favor insira os dados novamente ')
+    else:
+        M[linhaDigita][colunaDigita] = 0
+        print('Assento desocupado!')
+
+    input('Digite enter para prosseguir: ')
+
+def mostrarMapa():
+
+    print('MAPA: ')
+    for outro in range(len(M)): # Lê a matriz || 0 - Número de linhas
+        print()
+        for outroC in range(len(M[0])): # Lê cada valor da Matria || 0 - Número de colunas
+            if M[outro][outroC] == 0:
+                print('.', end=" ")
+            else:
+                print('x', end=" ")
+    print()
+    input('Continue...')
     
-def testeLerDados():
-    # for l in M:
-    #     print(l)
-    print(M)
+    # print('Posição - [{}][{}], valor: {}' .format(outro, outroC, M[outro][outroC])) 
+
+def selecionarCadeira():
+    input('Digite enter para prosseguir: ')
+    
+
+    
+
+
 
 # Menu
 if __name__ == '__main__':
@@ -121,14 +188,13 @@ if __name__ == '__main__':
             M = carregarDados()
 
         elif item == 2:
-            print('2 - Consultar Situação de um Assento:')
-            input('Digite enter para prosseguir')
+            consultarAssento(M)
 
         elif item == 3:
             realizarReserva(M)
 
         elif item == 4:
-            testeLerDados()
+            liberarAssento(M)
 
         elif item == 5:
             mostrarMapa()
@@ -148,3 +214,12 @@ if __name__ == '__main__':
         else:
             print("Opção não encontrada")
             break
+
+
+
+        # Tarefas
+
+        # Visualmente a função liberarAssento() já está pronto, no entanto, é necessário remover do arquivo
+        # .csv também
+
+        # Analisar como iremos guardar as informações dos indíviduos no sistema.

@@ -1,11 +1,12 @@
 import os
 
 
-def soma(x,y):
-    num = x * y
-    return num
+# def soma(x,y):
+#     num = x * y
+#     return num
 
-if __name__ == '__main__':
-    os.system('cls' if os.name == 'nt' else 'clear') # Limpa a tela - Win/Linux
+# if __name__ == '__main__':
+#     os.system('cls' if os.name == 'nt' else 'clear') # Limpa a tela - Win/Linux
 
-    print(soma(10,20))
+#     print(soma(10,20))
+
