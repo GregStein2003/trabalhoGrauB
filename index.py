@@ -1,6 +1,5 @@
 import os
 import csv
-# import pandas as pd
 
 os.system('cls' if os.name == 'nt' else 'clear') # Limpa a tela - Win/Linux
 
@@ -9,46 +8,41 @@ linhas = int(input('Digite a quantidade de fileiras: '))
 colunas = int(input('Digite a letra de assentos por fileira: '))
 linhaDigitaLetra = ''
 
-# def carregarNomeArquivo():
-#     nomeArquivo = input('Informe o nome do arquivo: ')
+def carregarNomeArquivo():
+    nomeArquivo = input('Informe o nome do arquivo: ')
 
-#     return nomeArquivo
+    return nomeArquivo
 
 def carregarDados():
 
-    # carregarNomeArquivo() # Função para pedir o nome do arquivo
-
-    nomeArquivo = input('Informe o nome do arquivo: ')
-
-    f = open(f"{nomeArquivo}.csv", 'a')
+    f = open(f"{cA}.csv", 'a')
     reader = csv.reader(f)
 
-    if os.stat(f"{nomeArquivo}.csv").st_size == 0:
+    if os.stat(f"{cA}.csv").st_size == 0:
         M = []
         for i in range(linhas):
             M.append([0] * colunas)
     else:
-        fReader = open(f"{nomeArquivo}.csv", 'r')
+        fReader = open(f"{cA}.csv", 'r')
         readerExistente = csv.reader(fReader)
         tabela = list(readerExistente)
-        countLinhas = 0
         M = []
         listaOcupados = []
         for x in tabela:
             if x == []:
                 continue  
             else: 
-                countLinhas = countLinhas + 1
                 xzao = str(x)
                 imprimir = xzao.replace("['", "").split(",")[0]
                 imprimir = imprimir.replace(imprimir[-1], "")
                 listaOcupados.append(imprimir)     
-        input('Digite algo: ')    
-        for i in range(countLinhas):
-            M.append([0] * countLinhas)
+
+        for i in range(linhas):
+            M.append([0] * linhas)
+
         for x in listaOcupados:
-            linhaFor = int(x[1]) - 1
-            if x[0] == 'A':
+            linhaFor = int(x[1]) - 1 
+            if x[0] == 'A': 
                 M[0][linhaFor] = 'x'
             elif x[0] == 'B':
                 M[1][linhaFor] = 'x'
@@ -56,8 +50,9 @@ def carregarDados():
                 M[2][linhaFor] = 'x'
             elif x[0] == 'D':
                 M[3][linhaFor] = 'x'
-            elif x[0] == 'D':
+            elif x[0] == 'E':
                 M[4][linhaFor] = 'x'
+
     f.close()
 
     return M
@@ -78,8 +73,6 @@ def consultarAssento(M):
 
 def realizarReserva(M):
 
-    nomeArquivo = input('Informe o nome do arquivo: ')
-    
     print('Lugares Vagos: ')
     for outro in range(len(M)): # Lê a matriz || 0 - Número de linhas
         print()
@@ -92,17 +85,17 @@ def realizarReserva(M):
     print()
                 
     linhaDigita = int(input('Digite uma linha: ')) - 1
-    colunaDigita = int(input('Digite uma coluna: ')) -1 
+    colunaDigita = int(input('Digite uma coluna: ')) - 1 
 
     for outro in range(len(M)): # Lê a matriz || 0 - Número de linhas
         for outroC in range(len(M[0])): # Lê cada valor da Matria || 0 - Número de colunas
-            if linhaDigita >= linhas and colunaDigita >= colunas:
+            if M[linhaDigita][colunaDigita] == 'x':
                 print('Digite uma cadeira válida!')
                 break
-            if outro == linhaDigita and outroC == colunaDigita:
+            elif outro == linhaDigita and outroC == colunaDigita:
                 sexo = str(input("Informe o seu gênero: "))
                 idade = int(input("Informe a sua idade: "))
-                fA = open(f"{nomeArquivo}.csv", "a")
+                fA = open(f"{cA}.csv", "a")
                 writer = csv.writer(fA)
                 if linhaDigita == 0:
                     linhaDigitaLetra = 'A'
@@ -115,11 +108,14 @@ def realizarReserva(M):
                 elif linhaDigita == 4:
                     linhaDigitaLetra = 'E'
                 writer.writerow([f'{linhaDigitaLetra}' + f'{colunaDigita + 1}', sexo, idade])
+                listaInfos.append(f'{linhaDigitaLetra}' + f'{colunaDigita + 1}', sexo, idade)
                 fA.close()
                 M[linhaDigita][colunaDigita] = 'x'
                 break
             
     input('Digite enter para prosseguir')
+
+    return listaInfos
 
 def liberarAssento(M):
 
@@ -141,6 +137,20 @@ def liberarAssento(M):
         print('O Assento já estava vago, por favor insira os dados novamente ')
     else:
         M[linhaDigita][colunaDigita] = 0
+        # For para ler o arquivo e encontrar a posição solicitada pelo usuário
+        fReader = open(f"{cA}.csv", 'r')
+        readerExistente = csv.reader(fReader)
+        tabela = list(readerExistente)
+        for x in tabela:
+            if x == []:
+                continue  
+            else: 
+                print(x)
+                # xzao = str(x)
+                # imprimir = xzao.replace("['", "").split(",")[0]
+                # imprimir = imprimir.replace(imprimir[-1], "")
+                # print(imprimir)    
+            
         print('Assento desocupado!')
 
     input('Digite enter para prosseguir: ')
@@ -157,21 +167,21 @@ def mostrarMapa():
                 print('x', end=" ")
     print()
     input('Continue...')
+    print(listaInfos)
+    input('Continue...')
     
     # print('Posição - [{}][{}], valor: {}' .format(outro, outroC, M[outro][outroC])) 
 
 def selecionarCadeira():
     input('Digite enter para prosseguir: ')
     
-
-    
-
-
-
 # Menu
 if __name__ == '__main__':
     os.system('cls' if os.name == 'nt' else 'clear') # Limpa a tela - Win/Linux
     # Menu Principal
+    
+    listaInfos = []
+
     while True:
         print('\n..:: Sistema para Gerenciamento de Cinema ::..\n')
         print('1 - Carregar Dados:')
@@ -185,6 +195,7 @@ if __name__ == '__main__':
         item = int(input("Digite uma opção: "))
 
         if item == 1:
+            cA = carregarNomeArquivo()
             M = carregarDados()
 
         elif item == 2:
