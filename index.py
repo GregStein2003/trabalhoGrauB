@@ -1,45 +1,42 @@
 import os
 import csv
 
-os.system('cls' if os.name == 'nt' else 'clear') # Limpa a tela - Win/Linux
-
-valor = float(input('Digite o valor do ingresso: '))
-linhas = int(input('Digite a quantidade de fileiras: '))
-colunas = int(input('Digite a letra de assentos por fileira: '))
-linhaDigitaLetra = ''
-
 def carregarNomeArquivo():
-    nomeArquivo = input('Informe o nome do arquivo: ')
+    nomeArquivo = input('Informe o nome do arquivo: ') # Função (nome do arquivo)
 
     return nomeArquivo
 
 def carregarDados():
 
-    f = open(f"{cA}.csv", 'a')
+    # Lê o arquivo CSV
+    f = open(f"{cA}.csv", 'r') # cA = retorno Função carregarNomeArquivo()
     reader = csv.reader(f)
 
-    if os.stat(f"{cA}.csv").st_size == 0:
+    # Comparação para verificar se possui dados no arquivo
+    if os.stat(f"{cA}.csv").st_size == 0: # Caso não tiver
         M = []
-        for i in range(linhas):
+        for i in range(linhas): # Cria a Matriz com zeros
             M.append([0] * colunas)
-    else:
+    else: # Caso tiver
         fReader = open(f"{cA}.csv", 'r')
         readerExistente = csv.reader(fReader)
         tabela = list(readerExistente)
         M = []
         listaOcupados = []
-        for x in tabela:
-            if x == []:
+        for x in tabela: # Lê as informações no csv
+            if x == []: # Pula linhas em branco
                 continue  
-            else: 
+            else: # Formatação do conteúdo que está dentro do arquivo csv
                 xzao = str(x)
                 imprimir = xzao.replace("['", "").split(",")[0]
                 imprimir = imprimir.replace(imprimir[-1], "")
                 listaOcupados.append(imprimir)     
 
+        # Cria a Matriz
         for i in range(linhas):
             M.append([0] * linhas)
 
+        # Substitui na matriz com 'x' os lugares ocupados 
         for x in listaOcupados:
             linhaFor = int(x[1]) - 1 
             if x[0] == 'A': 
@@ -52,38 +49,77 @@ def carregarDados():
                 M[3][linhaFor] = 'x'
             elif x[0] == 'E':
                 M[4][linhaFor] = 'x'
+            elif x[0] == 'F':
+                M[5][linhaFor] = 'x'
+            elif x[0] == 'G':
+                M[6][linhaFor] = 'x'
+            elif x[0] == 'H':
+                M[7][linhaFor] = 'x'
+            elif x[0] == 'I':
+                M[8][linhaFor] = 'x'
+            elif x[0] == 'J':
+                M[9][linhaFor] = 'x'
+            elif x[0] == 'K':
+                M[10][linhaFor] = 'x'
 
     f.close()
 
-    return M
+    return M # Retorna a Matriz
 
 def consultarAssento(M):
-
-    print(M)
     
+    # Pede as informações ao usuário
     linhaDigita = int(input('Digite uma linha: ')) - 1
-    colunaDigita = int(input('Digite uma coluna: ')) - 1 
+    colunaDigita = int(input('Digite uma coluna: ')) - 1
 
+    # Comparação para verificar se o local está ocupado
     if M[linhaDigita][colunaDigita] == 'x':
-        print('Assento está ocupada!')
+        # Converte Números para letras EX: [0][0] = A1
+        if linhaDigita == 0:
+            linhaDigitaOutro = 'A'
+        elif linhaDigita == 1:
+            linhaDigitaOutro = 'B'
+        elif linhaDigita == 2:
+            linhaDigitaOutro = 'C'
+        elif linhaDigita == 3:
+            linhaDigitaOutro = 'D'
+        elif linhaDigita == 4:
+            linhaDigitaOutro = 'E'
+        elif linhaDigita == 5:
+            linhaDigitaOutro = 'F'
+        elif linhaDigita == 6:
+            linhaDigitaOutro = 'G'
+        elif linhaDigita == 7:
+            linhaDigitaOutro = 'H'
+        elif linhaDigita == 8:
+            linhaDigitaOutro = 'I'
+        elif linhaDigita == 9:
+            linhaDigitaOutro = 'J'
+        elif linhaDigita == 10:
+            linhaDigitaOutro = 'K'
+        # Lê o arquivo
+        fReader = open(f"{cA}.csv", 'r')
+        readerExistente = csv.reader(fReader)
+        tabela = list(readerExistente)
+        for x in tabela:
+            if x == []:
+                continue  
+            else: 
+                # Comparação de Assentos
+                if x[0] == (linhaDigitaOutro + str(colunaDigita + 1)): # A1 == A + 1
+                    print(f'Assento Ocupado: Sexo:{x[1]}, Idade:{x[2]}Anos')
+                    break
+        fReader.close()
     else:
-        print('Assento está vaga!')
-
+        print('Assento está vago!')
     input('Digite enter para prosseguir: ')
 
 def realizarReserva(M):
 
-    print('Lugares Vagos: ')
-    for outro in range(len(M)): # Lê a matriz || 0 - Número de linhas
-        print()
-        for outroC in range(len(M[0])): # Lê cada valor da Matria || 0 - Número de colunas
-            if M[outro][outroC] == 0:
-                print('.', end=" ")
-            else:
-                print('x', end=" ")
-    print()
-    print()
+    # Mostra visualmente o mapa de Assentos
+    mostrarMapa()
                 
+    # Pede ao usuário a informações
     linhaDigita = int(input('Digite uma linha: ')) - 1
     colunaDigita = int(input('Digite uma coluna: ')) - 1 
 
@@ -92,8 +128,17 @@ def realizarReserva(M):
             if M[linhaDigita][colunaDigita] != 'x':
                 sexo = str(input("Informe o seu gênero: "))
                 idade = int(input("Informe a sua idade: "))
+                # Comparação para saber qual segmento de idade se encontra
+                if idade > 0 and idade <= 17:
+                    print(f'Meia-Entrada (Infantil)\n')
+                elif idade >= 18 and idade <= 59:
+                    print(f'Ingresso inteiro\n')
+                else:
+                    print(f'Meia-Entrada (Idoso)\n')
+                # Abre o arquivo
                 fA = open(f"{cA}.csv", "a")
                 writer = csv.writer(fA)
+                # Realiza a conversão de Letras para Número: [1][1] = B2    
                 if linhaDigita == 0:
                     linhaDigitaLetra = 'A'
                 elif linhaDigita == 1:
@@ -104,56 +149,51 @@ def realizarReserva(M):
                     linhaDigitaLetra = 'D'
                 elif linhaDigita == 4:
                     linhaDigitaLetra = 'E'
+                elif linhaDigita == 5:
+                    linhaDigitaLetra = 'F'
+                elif linhaDigita == 6:
+                    linhaDigitaLetra = 'G'
+                elif linhaDigita == 7:
+                    linhaDigitaLetra = 'H'
+                elif linhaDigita == 8:
+                    linhaDigitaLetra = 'I'
+                elif linhaDigita == 9:
+                    linhaDigitaLetra = 'J'
+                elif linhaDigita == 10:
+                    linhaDigitaLetra = 'K'
+                # Adiciona as informações no arquivo .CSV
                 writer.writerow([f'{linhaDigitaLetra}' + f'{colunaDigita + 1}', sexo, idade])
-                # listaInfos.append(f'{linhaDigitaLetra}' + f'{colunaDigita + 1}', sexo, idade)
                 fA.close()
+                # Retrata que o assento está ocupado na Matriz
                 M[linhaDigita][colunaDigita] = 'x'
                 break
             else:
-                if outro == len(M) - 1: 
-                    print('Cadeira inválida')
+                # Caso a cadeira já está ocupada
+                if outro == len(M) - 1 and M[linhaDigita][colunaDigita] == 'x':
                     break
             
     input('Digite enter para prosseguir')
 
-    return listaInfos
-
 def liberarAssento(M):
 
-    print('MAPA: ')
-    for outro in range(len(M)): # Lê a matriz || 0 - Número de linhas
-        print()
-        for outroC in range(len(M[0])): # Lê cada valor da Matria || 0 - Número de colunas
-            if M[outro][outroC] == 0:
-                print('.', end=" ")
-            else:
-                print('x', end=" ")
-    print()
-    print()
+    # Mostra Visualmente o mapa de assentos
+    mostrarMapa()
 
+    # Pede ao usuário o assento desejado
     linhaDigita = int(input('Digite uma linha: ')) - 1
     colunaDigita = int(input('Digite uma coluna: ')) - 1 
 
+    # Comparação, para obter a informação se o assento está ocupado ou não
     if M[linhaDigita][colunaDigita] == 0:
         print('O Assento já estava vago, por favor insira os dados novamente ')
     else:
+        # Altera somente na Matriz(Interna)
         M[linhaDigita][colunaDigita] = 0
-        # For para ler o arquivo e encontrar a posição solicitada pelo usuário
-        fReader = open(f"{cA}.csv", 'r')
-        readerExistente = csv.reader(fReader)
-        tabela = list(readerExistente)
-        for x in tabela:
-            if x == []:
-                continue  
-            else: 
-                if str(x[0]).startswith("A1"):
-                    print()
         print('Assento desocupado!')
 
     input('Digite enter para prosseguir: ')
 
 def mostrarMapa():
-
     print('MAPA: ')
     for outro in range(len(M)): # Lê a matriz || 0 - Número de linhas
         print()
@@ -163,62 +203,65 @@ def mostrarMapa():
             else:
                 print('x', end=" ")
     print()
+    print()
     input('Continue...')    
-    # print('Posição - [{}][{}], valor: {}' .format(outro, outroC, M[outro][outroC])) 
-
-def selecionarCadeira():
-    input('Digite enter para prosseguir: ')
 
 # Relatório
 
 def listagemInfos():
+    # Lê o arquivo
     fReader = open(f"{cA}.csv", 'r')
     readerExistente = csv.reader(fReader)
     tabela = list(readerExistente)
+    # For para ler as informações do .csv
     for x in tabela:
         if x == []:
             continue  
         else: 
+            # Comparação para saber qual o valor do ingresso
+            # X[0] = Assento; X[1] = Sexo; X[2] = Idade
             if int(x[2]) > 0 and int(x[2]) <= 17:
-                print(f'{x[0]}, {x[1]}, {x[2]}, R${(valor/2)}\n')
+                print(f'{x[0]}, {x[1]}, {x[2]} Anos, R${(valor/2)}\n') 
             elif int(x[2]) >= 18 and int(x[2]) <= 59:
-                print(f'{x[0]}, {x[1]}, {x[2]}, R${valor}\n')
+                print(f'{x[0]}, {x[1]}, {x[2]} Anos, R${valor}\n')
             else:
-                print(f'{x[0]}, {x[1]}, {x[2]}, R${(valor/2)}\n')
+                print(f'{x[0]}, {x[1]}, {x[2]} Anos, R${(valor/2)}\n')
     input('Digite enter para prosseguir: ')
 
 def quantidadeAssento():
 
-    qTotal = len(M) * len(M)
-    qReservados = 0
-    qLiberados = 0
+    qTotal = len(M) * len(M) # Cálcula a quantidade total de assentos
+    qReservados = 0 # Variável Contadora
+    qLiberados = 0 # Variável Contadora
 
     for outro in range(len(M)): # Lê a matriz || 0 - Número de linhas
         for outroC in range(len(M[0])): # Lê cada valor da Matria || 0 - Número de colunas
             if M[outro][outroC] == 0:
-                qLiberados += 1
+                qLiberados += 1 # Todas vez que o laço tiver vago(0), irá acrescentar +1 na variável
             else:
-                qReservados += 1
-                
+                qReservados += 1 # Todas vez que o laço tiver ocupado(x), irá acrescentar +1 na variável
+            
     print(f'\nQuantidade total de assentos: {qTotal} \n')
     print(f'Quantidade de assentos reservados: {qReservados} \n')
     print(f'Quantidade de assentos liberados: {qLiberados} \n')
     input('Digite enter para prosseguir: ')
 
 def quantidadeReserva():
-        assentoMasculino = 0
-        assentoFeminino = 0
+        assentoMasculino = 0 # Variável Contadora
+        assentoFeminino = 0 # Variável Contadora
+        # Lê o arquivo
         fReader = open(f"{cA}.csv", 'r')
         readerExistente = csv.reader(fReader)
         tabela = list(readerExistente)
+        # Laço para ler as informações na Tabela
         for x in tabela:
             if x == []:
                 continue  
             else: 
                 if x[1] == "M":
-                    assentoMasculino += 1
+                    assentoMasculino += 1 # Caso coluna Sexo for Masculino, acrescentar +1 na variável
                 else:
-                    assentoFeminino += 1
+                    assentoFeminino += 1 # Caso coluna Sexo for Feminino, acrescentar +1 na variável
         fReader.close()
 
         print(f'\nQuantidade de reservas realizada por mulheres: {assentoFeminino}\n')
@@ -227,26 +270,28 @@ def quantidadeReserva():
 
 def grafico():
 
-    meiaEntrada = 0
-    inteiraEntrada = 0
-    meiaIdoso = 0
+    meiaEntrada = 0 # Variável Contadora
+    inteiraEntrada = 0 # Variável Contadora
+    meiaIdoso = 0 # Variável Contadora
+    # Lê o arquivo
     fReader = open(f"{cA}.csv", 'r')
     readerExistente = csv.reader(fReader)
     tabela = list(readerExistente)
+    # Laço para ler todas as informações no arquivo .csv
     for x in tabela:
         if x == []:
             continue  
         else: 
-            if int(x[2]) > 0 and int(x[2]) <= 17:
-                meiaEntrada += 1
-            elif int(x[2]) >= 18 and int(x[2]) <= 59:
-                inteiraEntrada += 1
-            else:
-                meiaIdoso += 1
+            if int(x[2]) > 0 and int(x[2]) <= 17: # Comparação para saber o tipo de entrada (Meia-entrada (Infantil))
+                meiaEntrada += 1 # Caso o indivíduo tenha entre 0-17 anos, acrescentar +1 na variável
+            elif int(x[2]) >= 18 and int(x[2]) <= 59: # Comparação para saber o tipo de entrada (Entrada Inteira)
+                inteiraEntrada += 1 # Caso o indivíduo tenha entre 18-59 anos, acrescentar +1 na variável
+            else: # Meia entrada (Idoso)
+                meiaIdoso += 1 # Caso o indivíduo tenha 58++ anos, acrescentar +1 na variável
                 
     fReader.close()
 
-    # Variáveis para o gráfico
+    # Variáveis para o gráfico - Cálculo de valores
     valorMeiaEntrada = (valor/2) * meiaEntrada
     valorInteiraEntrada = valor * inteiraEntrada
     valorMeiaIdoso = (valor/2) * meiaIdoso
@@ -257,8 +302,7 @@ def grafico():
     porcentagemEntradaInteira = (inteiraEntrada/total) * 100
     porcentagemMeiaIdoso = (meiaIdoso/total) * 100
 
-
-
+    # Escreve na tela
     print(f"\nMeia menor: {meiaEntrada} – {porcentagemMeiaEntrada}% |=====---------------| R$ {valorMeiaEntrada}\n")
     print(f"Inteira : {inteiraEntrada} – {porcentagemEntradaInteira}% |===========---------| R$ {valorInteiraEntrada}\n")
     print(f"Meia idoso: {meiaIdoso} – {porcentagemMeiaIdoso}% |====----------------| R$ {valorMeiaIdoso}\n")
@@ -269,10 +313,16 @@ def grafico():
 # Menu
 if __name__ == '__main__':
     os.system('cls' if os.name == 'nt' else 'clear') # Limpa a tela - Win/Linux
+
+    # Informações básicas e variáveis
+    valor = float(input('Digite o valor do ingresso: '))
+    linhas = int(input('Digite a quantidade de fileiras: '))
+    colunas = int(input('Digite a letra de assentos por fileira: '))
+    linhaDigitaLetra = ''
+    linhaDigitaOutro = ''
+
     # Menu Principal
     
-    listaInfos = []
-
     while True:
         print('\n..:: Sistema para Gerenciamento de Cinema ::..\n')
         print('1 - Carregar Dados:')
@@ -302,6 +352,7 @@ if __name__ == '__main__':
 
         elif item == 6:
             while True:
+                # SUBMENU
                 print('\n..:: Menu - Relatórios ::..\n')
                 print('1 - Listagem de informações: ')
                 print('2 - Quantidade total de assentos: ')
@@ -309,7 +360,6 @@ if __name__ == '__main__':
                 print('4 - Gráfico:')
                 print('5 - Sair:\n')
                 itemSubMenu = int(input("Digite uma opção: "))
-
                 if itemSubMenu == 1:
                     listagemInfos()
                 elif itemSubMenu == 2:
@@ -329,12 +379,3 @@ if __name__ == '__main__':
         else:
             print("Opção não encontrada")
             break
-
-
-
-        # Tarefas
-
-        # Visualmente a função liberarAssento() já está pronto, no entanto, é necessário remover do arquivo
-        # .csv também
-
-        # Analisar como iremos guardar as informações dos indíviduos no sistema.
